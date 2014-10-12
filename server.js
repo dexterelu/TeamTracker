@@ -2,7 +2,8 @@ var http = require('http');
 var url = require('url');
 var fs = require('fs');
 var teamSize;
-var port = 80;
+var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var appName = 'TeamTracker';
 var team = {};
 var teamId = '';
@@ -111,6 +112,6 @@ http.createServer(function(request, response) {
 			response.end(content);
 		});
 	}
-}).listen(port);
+}).listen(port, ip);
  
 console.log(appName + ' running on port ' + port);
