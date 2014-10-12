@@ -139,7 +139,7 @@
 			document.getElementById('userid').value = response.id;
 			document.getElementById('info').innerHTML = '<b>' + response.first_name + '</b><b>' + response.last_name + '</b>';
 		});
-		FB.api('/me/picture?type=normal', function(response) {
+		FB.api('/me/picture?type=square', function(response) {
 			document.getElementById('photo').value = response.data.url;
 			document.getElementById('picture').innerHTML = '<img src="' + response.data.url + '">';
 		});
