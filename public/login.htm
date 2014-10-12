@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+		html, body {
+			height: 100%;
+			min-width:240px;
+			min-height:240px;
+			margin: 0;
+			padding: 0;
+			background-image: -ms-linear-gradient(top, #666666 0%, #222222 100%);
+			background-image: -moz-linear-gradient(top, #666666 0%, #222222 100%);
+			background-image: -o-linear-gradient(top, #666666 0%, #222222 100%);
+			background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #666666), color-stop(1, #222222));
+			background-image: -webkit-linear-gradient(top, #666666 0%, #222222 100%);
+			background-image: linear-gradient(to bottom, #666666 0%, #222222 100%);
+		}
+		form>* {
+			font-family: Segoe UI;
+			display:block;
+			text-align:center;
+			margin: 8px auto;
+			width:200px;
+			padding:3px;
+		}
+		form>input, #status {
+			border-radius:5px;
+			border:0;
+			box-shadow:0px 2px 5px rgba(0,0,0,.2);
+		}
+		form>input:hover {
+			box-shadow:0px 2px 5px rgba(0,0,0,.4);
+		}
+		form>input:focus {
+			background:#cef;
+		}
+		form>input[type=submit] {
+			cursor: pointer;
+			width:206px;
+		}
+		form>h2 {
+			margin:-10px 0 0 8px;
+		}
+		form>label {
+			margin:-10px 0px 5px 8px;
+			color:#666;
+			font-size:80%;
+		}
+		form {
+			border: 2px solid #fff;
+			box-shadow: 0px 5px 25px #000;
+			border-radius: 5px;
+			padding: 10px;
+			margin-left:-110px;
+			margin-top:-120px;
+			width: 220px;
+			height:220px;
+			background-image: -ms-linear-gradient(top, #EEEEEE 0%, #BBBBBB 100%);
+			background-image: -moz-linear-gradient(top, #EEEEEE 0%, #BBBBBB 100%);
+			background-image: -o-linear-gradient(top, #EEEEEE 0%, #BBBBBB 100%);
+			background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #EEEEEE), color-stop(1, #BBBBBB));
+			background-image: -webkit-linear-gradient(top, #EEEEEE 0%, #BBBBBB 100%);
+			background-image: linear-gradient(to bottom, #EEEEEE 0%, #BBBBBB 100%);
+		}
+		#container {
+			position:absolute;
+			display:block;
+			left:50%;
+			top:50%;
+		}
+		#status {
+			height:60px;
+			display:block;
+			text-align:center;
+			background:#fff;
+		}
+		#picture {
+			display:block;
+			float:left;
+			padding:5px;
+			height:50px;
+		}
+		#info {
+			padding:5px;
+			display:inline-block;
+			text-align:left;
+		}
+		#info>b {
+			line-height:25px;
+			display:block;
+		}
+		#picture>img {
+			width:50px;
+			height:50px;
+		}
+	</style>
+	<meta charset="UTF-8">
+	<title>TeamTracker - Login</title>
+</head>
+<body>
+	<script>
+	function statusChangeCallback(response) {
+		if (response.status === 'connected') {
+			updateStatus();
+		}
+	}
+	function checkLoginState() {
+		FB.getLoginStatus(function(response) {
+			statusChangeCallback(response);
+		});
+	}
+
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId      : '1481534498775840',
+			cookie     : true,
+			xfbml      : true,
+			version    : 'v2.1'
+		});
+
+		FB.getLoginStatus(function(response) {
+			statusChangeCallback(response);
+		});
+	};
+
+	// Load the SDK asynchronously
+	(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+
+	function updateStatus() {
+		document.getElementById('status').innerHTML = '<div id="picture"></div><div id="info"></div>';
+		FB.api('/me', function(response) {
+			document.getElementById('fullname').value = response.name;
+			document.getElementById('userid').value = response.id;
+			document.getElementById('info').innerHTML = '<b>' + response.first_name + '</b><b>' + response.last_name + '</b>';
+		});
+		FB.api('/me/picture?type=normal', function(response) {
+			document.getElementById('photo').value = response.data.url;
+			document.getElementById('picture').innerHTML = '<img src="' + response.data.url + '">';
+		});
+	}
+	</script>
+	<div id="container">
+		<form action="app" method="post">
+			<h2>TeamTracker</h2>
+			<label>see your team in action</label>
+			<div id="status">
+				<fb:login-button scope="public_profile" onlogin="checkLoginState();">
+				</fb:login-button>
+			</div>
+			<input type="hidden" name="photo" id="photo" />
+			<input type="hidden" name="fullname" id="fullname" />
+			<input type="hidden" name="userid" id="userid" />
+			<input type="text" name="teamname" id="teamname" placeholder="team name" />
+			<input type="password" name="password" id="password" placeholder="team password" />
+			<input type="submit" value="Start Tracking" />
+		</form>
+	</div>
+</body>
+</html>
