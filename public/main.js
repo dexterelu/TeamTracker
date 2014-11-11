@@ -18,7 +18,6 @@ function updateMarkers() {
 			userid: userid,
 			lat: position.coords.latitude,
 			lng: position.coords.longitude,
-			photo: photo,
 			name: fullname,
 		};
 		var posting = $.post('update', selfData);
@@ -31,7 +30,7 @@ function updateMarkers() {
 					marker[id] = new google.maps.Marker({
 						position: new google.maps.LatLng(member.lat, member.lng),
 						map: map,
-						icon: member.photo,
+						icon: "https://graph.facebook.com/" + id + "/picture?type=small",
 						title: member.name
 					});
 				} else {
