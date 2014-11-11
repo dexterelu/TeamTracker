@@ -54,7 +54,6 @@ $(document).ready(function() {
 	navigator.geolocation.getCurrentPosition(function(position) {
 		lat = position.coords.latitude;
 		lng = position.coords.longitude;
-		$("#nav").load("nav"); 
 		initializeMap();
 		setInterval(updateMarkers, 1000);
 	});
