@@ -70,20 +70,9 @@ http.createServer(function(request, response) {
 					lat: parseFloat(post.lat),
 					lng: parseFloat(post.lng),
 					name: post.name + ' (' + post.teamname + ')',
-					timestamp: new Date().getTime()
+					timestamp: new Date().getTime(),
+					custom: post.custom
 				};
-
-				// remove expired users
-				teamSize = 0;
-				for(var memberId in team[teamId]) {
-					var now = new Date().getTime();
-					var lastUpdate = now - team[teamId][memberId].timestamp;
-					if(lastUpdate > 30000) {
-						delete team[teamId][memberId];
-					} else {
-						teamSize++;
-					}
-				}
 			}
 		} else {
 			loginData = '';
@@ -111,5 +100,21 @@ http.createServer(function(request, response) {
 		});
 	}
 }).listen(port, ip);
- 
+
+// remove expired users
+setInterval(function() {
+	for(var teamId in team) {
+		teamSize = 0;
+		for(var memberId in team[teamId]) {
+			var now = new Date().getTime();
+			var lastUpdate = now - team[teamId][memberId].timestamp;
+			if(lastUpdate > 30000) {
+				delete team[teamId][memberId];
+			} else {
+				teamSize++;
+			}
+		}
+	}
+}, 1000);
+
 console.log(appName + ' running on port ' + port);
