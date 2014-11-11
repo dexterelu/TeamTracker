@@ -11,8 +11,7 @@ var loginData = '';
 var route = {
 	'login'	: 'public/login.htm',
 	'main'		: 'public/main.js',
-	'app'		: 'public/app.htm',
-	'nav'		: 'public/nav.htm'
+	'app'		: 'public/app.htm'
 };
 
 var urldecode = function(data) {
@@ -71,7 +70,6 @@ http.createServer(function(request, response) {
 					lat: parseFloat(post.lat),
 					lng: parseFloat(post.lng),
 					name: post.name + ' (' + post.teamname + ')',
-					photo: post.photo,
 					timestamp: new Date().getTime()
 				};
 
