@@ -1,5 +1,6 @@
 var map;
 var marker = {};
+var customData = {};
 
 function initializeMap() {
 	map = new google.maps.Map(document.getElementById('map-canvas'), {
@@ -19,6 +20,7 @@ function updateMarkers() {
 			lat: position.coords.latitude,
 			lng: position.coords.longitude,
 			name: fullname,
+			custom: customData
 		};
 		var posting = $.post('update', selfData);
 		posting.done(function(members) {
