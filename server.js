@@ -1,7 +1,6 @@
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
-var teamSize;
 var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var appName = 'TeamTracker';
@@ -84,7 +83,7 @@ http.createServer(function(request, response) {
 		if(team[teamId] === undefined) {
 			response.end();
 		} else {
-			console.log('serving team ' + teamId + ', ' + teamSize + ' members');
+			console.log('serving team ' + teamId);
 			response.end(JSON.stringify(team[teamId]));
 		}
 	} else {
@@ -104,14 +103,11 @@ http.createServer(function(request, response) {
 // remove expired users
 setInterval(function() {
 	for(var teamId in team) {
-		teamSize = 0;
 		for(var memberId in team[teamId]) {
 			var now = new Date().getTime();
 			var lastUpdate = now - team[teamId][memberId].timestamp;
 			if(lastUpdate > 30000) {
 				delete team[teamId][memberId];
-			} else {
-				teamSize++;
 			}
 		}
 	}
